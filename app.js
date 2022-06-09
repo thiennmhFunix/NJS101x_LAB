@@ -1,53 +1,15 @@
 // import globally module that Nodejs ships
 const http = require("http");
-const fs = require("fs");
+
+const routes = require("./routes");
+
+const handler = routes.handler;
+const someText = routes.someText;
+
+console.log(someText);
 
 // create a server that executes specific tasks
-const server = http.createServer((req, res) => {
-	const url = req.url;
-	const method = req.method;
-
-	// if homepage then show this
-	if (url === "/") {
-		res.write(`
-			<html>
-				<head>
-					<title>Message</title>
-				</head>
-				<body>
-					<form action="/message" method="POST">
-						<input type="text" name="message">
-						<button type="submit">Send</button>
-					</form>
-				</body>
-			</html>`);
-		return res.end();
-	}
-
-	if (url === "/message" && method === "POST") {
-		const body = [];
-		req.on("data", (chunk) => {
-			console.log(chunk); // <Buffer 6d 65..>
-			body.push(chunk);
-		});
-
-		req.on("end", () => {
-			const parsedBody = Buffer.concat(body).toString(); // message=vvvv
-			const message = parsedBody.split("=")[1]; // vvvv
-			fs.writeFileSync("message.txt", message);
-		});
-
-		res.statusCode = 302;
-		res.setHeader("location", "/");
-		return res.end();
-	}
-	res.setHeader("Content-Type", "text/html");
-	res.write("<html>");
-	res.write("<head><title>Title</title></head>");
-	res.write("<body><h1>Hello from my Node.js server!</h1></body>");
-	res.write("</html>");
-	res.end();
-});
+const server = http.createServer(handler);
 
 // keep nodejs not shut down server but keep server alive listening
 // listen method takes port to track any incoming request into this port, default port 80
