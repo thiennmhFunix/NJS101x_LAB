@@ -7,23 +7,15 @@ const parser = require("body-parser");
 // create app by running express function
 const app = express();
 
+// define routes
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+
+app.use(adminRoutes);
+app.use(shopRoutes);
+
 // using use function of express as a middleware function
 app.use(parser.urlencoded({ extended: false }));
-
-app.use("/add-product", (req, res, next) => {
-	res.send(
-		"<form action='/product' method='POST'><input type='text' name='title'><button type='submit'>Add Product</button></form>"
-	);
-});
-
-app.post("/product", (req, res, next) => {
-	console.log(req.body);
-	res.redirect("/");
-});
-
-app.use("/", (req, res, next) => {
-	res.send("<h1>Hello from Express!</h1>");
-});
 
 // create a server
 app.listen(3000);
