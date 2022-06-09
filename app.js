@@ -1,15 +1,13 @@
 // import globally module that Nodejs ships
 const http = require("http");
 
-const routes = require("./routes");
+const express = require("express");
 
-const handler = routes.handler;
-const someText = routes.someText;
-
-console.log(someText);
+// create app by running express function
+const app = express();
 
 // create a server that executes specific tasks
-const server = http.createServer(handler);
+const server = http.createServer(app);
 
 // keep nodejs not shut down server but keep server alive listening
 // listen method takes port to track any incoming request into this port, default port 80
