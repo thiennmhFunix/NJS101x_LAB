@@ -14,7 +14,7 @@ const shopRoutes = require("./routes/shop");
 // using use function of express as a middleware function
 app.use(parser.urlencoded({ extended: false }));
 
-app.use(adminRoutes);
+app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
