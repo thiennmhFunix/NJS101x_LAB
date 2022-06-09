@@ -6,6 +6,16 @@ const express = require("express");
 // create app by running express function
 const app = express();
 
+// using use function of express as a middleware function
+app.use((req, res, next) => {
+	console.log("Middleware 1 activated!");
+	next();
+});
+
+app.use((req, res, next) => {
+	console.log("Middleware 2 activated!");
+});
+
 // create a server that executes specific tasks
 const server = http.createServer(app);
 
