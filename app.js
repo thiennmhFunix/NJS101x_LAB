@@ -1,10 +1,13 @@
 // import globally module that Nodejs ships
 const http = require("http");
+const fs = require("fs");
 
 // create a server that executes specific tasks
 const server = http.createServer((req, res) => {
 	const url = req.url;
+	const method = req.method;
 
+	// if homepage then show this
 	if (url === "/") {
 		res.write(`
 			<html>
@@ -21,6 +24,12 @@ const server = http.createServer((req, res) => {
 		return res.end();
 	}
 
+	if (url === "/message" && method === "POST") {
+		fs.writeFileSync("message.txt", "DUMMY");
+		res.statusCode = 302;
+		res.setHeader("location", "/");
+		return res.end();
+	}
 	res.setHeader("Content-Type", "text/html");
 	res.write("<html>");
 	res.write("<head><title>Title</title></head>");
