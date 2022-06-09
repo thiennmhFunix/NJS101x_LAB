@@ -14,6 +14,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
 	console.log("Middleware 2 activated!");
+	res.send("<h1>Hello from Express!</h1>");
 });
 
 // create a server that executes specific tasks
