@@ -9,6 +9,10 @@ const parser = require("body-parser");
 // create app by running express function
 const app = express();
 
+// tell express the templating engine
+app.set("view-engine", "pug");
+app.set("views", "views");
+
 // define routes
 const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
