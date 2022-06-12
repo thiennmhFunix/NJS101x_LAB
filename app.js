@@ -10,7 +10,7 @@ const parser = require("body-parser");
 const app = express();
 
 // define routes
-const adminRoutes = require("./routes/admin");
+const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 // using use function of express as a middleware function
@@ -18,7 +18,7 @@ app.use(parser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(rootDir, "public")));
 
-app.use("/admin", adminRoutes);
+app.use("/admin", adminData.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
