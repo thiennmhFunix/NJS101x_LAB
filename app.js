@@ -26,7 +26,7 @@ app.use("/admin", adminData.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-	res.status(404).render("404.pug");
+	res.status(404).render("404.pug", { pageTitle: "Page Not Found" });
 });
 
 // create a server
