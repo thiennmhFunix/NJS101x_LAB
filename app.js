@@ -16,6 +16,8 @@ const shopRoutes = require("./routes/shop");
 // using use function of express as a middleware function
 app.use(parser.urlencoded({ extended: false }));
 
+app.use(express.static(path.join(rootDir, "public")));
+
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
