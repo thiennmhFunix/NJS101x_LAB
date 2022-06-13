@@ -5,12 +5,17 @@ const rootDir = require("./util/path");
 
 const express = require("express");
 const parser = require("body-parser");
+// require handlebars templating engine
+const expressHbs = require("express-handlebars");
 
 // create app by running express function
 const app = express();
 
 // tell express the templating engine
-app.set("view-engine", "pug");
+app.engine("hbs", expressHbs());
+
+// app.set("view-engine", "pug");
+app.set("view-engine", "hbs");
 app.set("views", "views");
 
 // define routes
