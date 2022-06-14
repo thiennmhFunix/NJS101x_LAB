@@ -5,25 +5,15 @@ const rootDir = require("./util/path");
 
 const express = require("express");
 const parser = require("body-parser");
-// require handlebars templating engine
-const expressHbs = require("express-handlebars");
 
 // create app by running express function
 const app = express();
 
 // tell express the templating engine
-app.engine(
-	"hbs",
-	expressHbs({
-		layoutsDir: "views/layouts/",
-		defaultLayout: "main-layout",
-		extname: "hbs",
-	})
-);
-
-// app.set("view-engine", "pug");
-app.set("view-engine", "hbs");
+app.set("view-engine", "ejs");
 app.set("views", "views");
+// app.set("view-engine", "pug");
+// app.set("view-engine", "hbs");
 
 // define routes
 const adminData = require("./routes/admin");
@@ -38,7 +28,7 @@ app.use("/admin", adminData.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-	res.status(404).render("404.pug", { pageTitle: "Page Not Found" });
+	res.status(404).render("404.ejs", { pageTitle: "Page Not Found" });
 });
 
 // create a server
