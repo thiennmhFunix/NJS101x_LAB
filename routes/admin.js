@@ -18,7 +18,11 @@ router.get("/add-product", (req, res, next) => {
 
 // /admin/add-product => POST
 router.post("/add-product", (req, res, next) => {
-	products.push({ title: req.body.title });
+	products.push({
+		title: req.body.title,
+		activeAddProduct: true,
+		mainCSS: true,
+	});
 	res.redirect("/");
 });
 
