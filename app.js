@@ -23,7 +23,7 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 // run database
-db.execute("SELECT * FROM products");
+db.execute("SELECT * FROM products").then().catch();
 
 // using use function of express as a middleware function
 app.use(parser.urlencoded({ extended: false }));
