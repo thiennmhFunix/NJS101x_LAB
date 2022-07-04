@@ -7,6 +7,8 @@ const express = require("express");
 const parser = require("body-parser");
 
 const errorController = require("./controllers/error");
+const db = require("./util/database");
+
 // create app by running express function
 const app = express();
 
@@ -19,6 +21,9 @@ app.set("views", "views");
 // define routes
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+
+// run database
+db.execute("SELECT * FROM products");
 
 // using use function of express as a middleware function
 app.use(parser.urlencoded({ extended: false }));
