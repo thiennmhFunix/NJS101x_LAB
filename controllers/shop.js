@@ -17,10 +17,10 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
 	const prodId = req.params.productId;
-	Product.findById(prodId)
-		.then(([product]) => {
+	Product.findByPk(prodId) // could use findAll with where params
+		.then((product) => {
 			res.render("shop/product-detail.ejs", {
-				product: product[0],
+				product: product,
 				pageTitle: product.title,
 				path: "/products",
 			});
