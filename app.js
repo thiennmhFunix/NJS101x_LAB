@@ -22,15 +22,6 @@ app.set("views", "views");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
-// run database
-db.execute("SELECT * FROM products")
-	.then((result) => {
-		console.log(result[0], result[1]);
-	})
-	.catch((err) => {
-		console.log(err);
-	});
-
 // using use function of express as a middleware function
 app.use(parser.urlencoded({ extended: false }));
 
