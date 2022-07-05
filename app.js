@@ -12,6 +12,8 @@ const Product = require("./models/product"); // to add relation
 const User = require("./models/user"); // to add relation
 const Cart = require("./models/cart"); // to add relation
 const CartItem = require("./models/cart-item"); // to add relation
+const Order = require("./models/order"); // to add relation
+const OrderItem = require("./models/order-item"); // to add relation
 
 // create app by running express function
 const app = express();
@@ -57,6 +59,9 @@ User.hasOne(Cart);
 Cart.belongsTo(User);
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product, { through: OrderItem });
 
 // sync DB while starting server
 sequelize
