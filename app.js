@@ -7,7 +7,7 @@ const express = require("express");
 const parser = require("body-parser");
 
 const errorController = require("./controllers/error");
-const db = require("./util/database");
+const sequelize = require("./util/database");
 
 // create app by running express function
 const app = express();
@@ -32,5 +32,13 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-// create a server
-app.listen(3000);
+sequelize
+	.sync()
+	.then((result) => {
+		console.log(result);
+		// create a server
+		app.listen(3000);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
