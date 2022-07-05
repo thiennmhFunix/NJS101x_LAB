@@ -10,6 +10,8 @@ const errorController = require("./controllers/error");
 const sequelize = require("./util/database");
 const Product = require("./models/product"); // to add relation
 const User = require("./models/user"); // to add relation
+const Cart = require("./models/cart"); // to add relation
+const CartItem = require("./models/cart-item"); // to add relation
 
 // create app by running express function
 const app = express();
@@ -50,13 +52,16 @@ Product.belongsTo(User, {
 	constraint: true,
 	onDelete: "CASCADE",
 });
-
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 // sync DB while starting server
 sequelize
-	// .sync({ force: true })
-	.sync()
+	.sync({ force: true })
+	// .sync()
 	.then((result) => {
 		return User.findByPk(1);
 		// console.log(result);
