@@ -10,6 +10,8 @@ const errorController = require("./controllers/error");
 
 const mongoConnect = require("./util/database").mongoConnect;
 
+const User = require("./models/user");
+
 // create app by running express function
 const app = express();
 
@@ -29,14 +31,14 @@ app.use(parser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, "public")));
 
 app.use((req, res, next) => {
-	// User.findByPk(1)
-	// 	.then((user) => {
-	// 		req.user = user;
-	// 		next();
-	// 	})
-	// 	.catch((err) => {
-	// 		console.log(err);
-	// 	});
+	User.findByPk("62c71c8ed6a839870aef4b09")
+		.then((user) => {
+			req.user = user;
+			next();
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 	next();
 });
 
