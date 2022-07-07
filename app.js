@@ -20,7 +20,7 @@ app.set("views", "views");
 // app.set("view-engine", "hbs");
 
 // define routes
-// const adminRoutes = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 // const shopRoutes = require("./routes/shop");
 
 // using use function of express as a middleware function
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 	// 	});
 });
 
-// app.use("/admin", adminRoutes);
+app.use("/admin", adminRoutes);
 // app.use(shopRoutes);
 
 app.use(errorController.get404);
