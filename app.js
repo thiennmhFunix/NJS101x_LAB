@@ -8,7 +8,7 @@ const parser = require("body-parser");
 
 const errorController = require("./controllers/error");
 
-const mongoConnect = require("./util/database");
+const mongoConnect = require("./util/database").mongoConnect;
 
 // create app by running express function
 const app = express();
@@ -37,6 +37,7 @@ app.use((req, res, next) => {
 	// 	.catch((err) => {
 	// 		console.log(err);
 	// 	});
+	next();
 });
 
 app.use("/admin", adminRoutes);
