@@ -33,7 +33,7 @@ app.use(express.static(path.join(rootDir, "public")));
 app.use((req, res, next) => {
 	User.findByPk("62c71c8ed6a839870aef4b09")
 		.then((user) => {
-			req.user = user;
+			req.user = new User(user.name, user.email, user.cart, user._id);
 			next();
 		})
 		.catch((err) => {
