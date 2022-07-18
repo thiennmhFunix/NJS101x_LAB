@@ -23,6 +23,7 @@ app.set("views", "views");
 // define routes
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth");
 
 // using use function of express as a middleware function
 app.use(parser.urlencoded({ extended: false }));
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorController.get404);
 
