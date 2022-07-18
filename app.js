@@ -7,13 +7,21 @@ const express = require("express");
 const parser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const errorController = require("./controllers/error");
 
 const User = require("./models/user");
 
+const MONGODB_URI =
+	"mongodb+srv://nmht:nmht2021@mongodb-test.p8duu.mongodb.net/?retryWrites=true&w=majority";
+
 // create app by running express function
 const app = express();
+const store = new MongoDBStore({
+	uri: MONGODB_URI,
+	collection: "sessions",
+});
 
 // tell express the templating engine
 app.set("view-engine", "ejs");
@@ -32,7 +40,12 @@ app.use(parser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, "public")));
 
 app.use(
-	session({ secret: "mystring", resave: false, saveUninitialized: false })
+	session({
+		secret: "mystring",
+		resave: false,
+		saveUninitialized: false,
+		store: store,
+	})
 );
 
 app.use((req, res, next) => {
@@ -53,9 +66,7 @@ app.use(authRoutes);
 app.use(errorController.get404);
 
 mongoose
-	.connect(
-		"mongodb+srv://nmht:nmht2021@mongodb-test.p8duu.mongodb.net/?retryWrites=true&w=majority"
-	)
+	.connect(MONGODB_URI)
 	.then((result) => {
 		User.findOne().then((user) => {
 			if (!user) {
