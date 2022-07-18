@@ -19,7 +19,7 @@ exports.postAddProduct = (req, res, next) => {
 		price: price,
 		description: description,
 		imageUrl: imageUrl,
-		userId: req.session.user, // mongoose auto pick _id
+		userId: req.user, // mongoose auto pick _id
 	});
 	product
 		.save()
