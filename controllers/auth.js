@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 const User = require("../models/user");
 
 exports.getLogin = (req, res, next) => {
@@ -40,9 +42,12 @@ exports.postSignup = (req, res, next) => {
 			if (userDoc) {
 				return res.redirect("/signup");
 			}
+			return bcrypt.hash(password, 12); // 12 is number of rounds to hash password. More rounds is more secure
+		})
+		.then((hashedPassword) => {
 			const user = new User({
 				email: email,
-				password: password,
+				password: hashedPassword,
 				cart: { items: [] },
 			});
 			return user.save();
