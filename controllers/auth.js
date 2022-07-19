@@ -6,7 +6,7 @@ exports.getLogin = (req, res, next) => {
 	res.render("auth/login.ejs", {
 		path: "/login",
 		pageTitle: "Login",
-		isAuthenticated: false,
+		errorMessage: req.flash("error"),
 	});
 };
 
@@ -14,7 +14,6 @@ exports.getSignup = (req, res, next) => {
 	res.render("auth/signup.ejs", {
 		path: "/signup",
 		pageTitle: "Signup",
-		isAuthenticated: false,
 	});
 };
 
@@ -25,6 +24,7 @@ exports.postLogin = (req, res, next) => {
 	User.findOne({ email: email })
 		.then((user) => {
 			if (!user) {
+				req.flash("error", "Invalid email or password.");
 				return res.redirect("/login");
 			}
 			// bcrypt function is async
