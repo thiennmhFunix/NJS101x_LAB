@@ -19,14 +19,32 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-	User.findById("62d59cff3784242137091e84")
+	const email = req.body.email;
+	const password = req.body.password;
+
+	User.findOne({ email: email })
 		.then((user) => {
-			req.session.isLoggedIn = true;
-			req.session.user = user;
-			req.session.save(() => {
-				// async wait for done process then proceed
-				res.redirect("/");
-			});
+			if (!user) {
+				return res.redirect("/login");
+			}
+			// bcrypt function is async
+			bcrypt
+				.compare(password, user.password)
+				.then((doMatch) => {
+					if (doMatch) {
+						req.session.isLoggedIn = true;
+						req.session.user = user;
+						return req.session.save(() => {
+							// async wait for done process then proceed
+							res.redirect("/");
+						});
+					}
+					res.redirect("/login");
+				})
+				.catch((err) => {
+					console.log(err);
+					res.redirect("login");
+				});
 		})
 		.catch((err) => console.log(err));
 };
