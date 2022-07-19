@@ -4,6 +4,7 @@ const Order = require("../models/order");
 exports.getProducts = (req, res, next) => {
 	Product.find()
 		.then((products) => {
+			console.log(products);
 			res.render("shop/product-list.ejs", {
 				prods: products,
 				pageTitle: "All Products",
@@ -17,7 +18,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
 	const prodId = req.params.productId;
-	Product.findById(prodId) // could use findAll with where params
+	Product.findById(prodId)
 		.then((product) => {
 			res.render("shop/product-detail.ejs", {
 				product: product,
@@ -44,7 +45,8 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
 	req.user
-		.populate(["cart.items.productId"])
+		.populate("cart.items.productId")
+		.execPopulate()
 		.then((user) => {
 			const products = user.cart.items;
 			res.render("shop/cart.ejs", {
@@ -53,9 +55,7 @@ exports.getCart = (req, res, next) => {
 				products: products,
 			});
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+		.catch((err) => console.log(err));
 };
 
 exports.postCart = (req, res, next) => {
@@ -77,17 +77,16 @@ exports.postCartDeleteProduct = (req, res, next) => {
 		.then((result) => {
 			res.redirect("/cart");
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+		.catch((err) => console.log(err));
 };
 
 exports.postOrder = (req, res, next) => {
 	req.user
-		.populate(["cart.items.productId"])
+		.populate("cart.items.productId")
+		.execPopulate()
 		.then((user) => {
 			const products = user.cart.items.map((i) => {
-				return { quantity: i.quantity, product: { ...i.productId._doc } }; // _doc allow accessing to get full info of product
+				return { quantity: i.quantity, product: { ...i.productId._doc } };
 			});
 			const order = new Order({
 				user: {
@@ -104,9 +103,7 @@ exports.postOrder = (req, res, next) => {
 		.then(() => {
 			res.redirect("/orders");
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+		.catch((err) => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
@@ -118,7 +115,5 @@ exports.getOrders = (req, res, next) => {
 				orders: orders,
 			});
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+		.catch((err) => console.log(err));
 };
