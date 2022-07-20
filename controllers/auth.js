@@ -41,12 +41,27 @@ exports.getSignup = (req, res, next) => {
 		path: "/signup",
 		pageTitle: "Signup",
 		errorMessage: message,
+		lastInput: {
+			email: "",
+			password: "",
+			confirmPassword: "",
+		},
 	});
 };
 
 exports.postLogin = (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
+
+	const errors = validationResult(req); // get by middleware check from router
+	if (!errors.isEmpty()) {
+		return res.status(422).render("auth/login.ejs", {
+			path: "/login",
+			pageTitle: "Login",
+			errorMessage: errors.array()[0].msg,
+		});
+	}
+
 	User.findOne({ email: email })
 		.then((user) => {
 			if (!user) {
@@ -78,6 +93,7 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
+
 	const errors = validationResult(req); // get by middleware check from router
 	if (!errors.isEmpty()) {
 		console.log(errors.array());
@@ -85,8 +101,14 @@ exports.postSignup = (req, res, next) => {
 			path: "/signup",
 			pageTitle: "Signup",
 			errorMessage: errors.array()[0].msg,
+			lastInput: {
+				email: email,
+				password: password,
+				confirmPassword: req.body.confirmPassword,
+			},
 		});
 	}
+
 	bcrypt
 		.hash(password, 12)
 		.then((hashedPassword) => {
