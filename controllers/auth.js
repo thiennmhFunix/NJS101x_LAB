@@ -94,7 +94,7 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
-
+	console.log(email);
 	const errors = validationResult(req); // get by middleware check from router
 	if (!errors.isEmpty()) {
 		console.log(errors.array());
