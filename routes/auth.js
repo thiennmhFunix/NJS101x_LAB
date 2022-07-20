@@ -13,7 +13,16 @@ router.post("/login", authController.postLogin);
 
 router.post(
 	"/signup",
-	check("email").isEmail().withMessage("Please enter a valid email."),
+	check("email")
+		.isEmail()
+		.withMessage("Please enter a valid email.")
+		// custom validator
+		.custom((value, { req }) => {
+			if (value === "name0@mail.com") {
+				throw new Error("This email address is not allowed.");
+			}
+			return true;
+		}),
 	authController.postSignup
 );
 
