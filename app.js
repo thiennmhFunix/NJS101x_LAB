@@ -34,6 +34,18 @@ const fileStorage = multer.diskStorage({
 	},
 }); // diskStorage is a storage engine
 
+const fileFilter = (req, file, cb) => {
+	if (
+		file.mimetype === "image/png" ||
+		file.mimetype === "image/jpg" ||
+		file.mimetype === "image/jpeg"
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+
 app.set("view-engine", "ejs");
 app.set("views", "views");
 
@@ -42,7 +54,9 @@ const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ storage: fileStorage }).single("image")); // multer to handle multipart form data
+app.use(
+	multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+); // multer to handle multipart form data
 app.use(express.static(path.join(rootDir, "public")));
 app.use(
 	session({
