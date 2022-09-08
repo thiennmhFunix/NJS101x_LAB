@@ -25,6 +25,15 @@ const store = new MongoDBStore({
 });
 const csrfProtection = csrf();
 
+const fileStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "images");
+	},
+	filename: (req, file, cb) => {
+		cb(null, new Date().toISOString() + "-" + file.originalname);
+	},
+}); // diskStorage is a storage engine
+
 app.set("view-engine", "ejs");
 app.set("views", "views");
 
@@ -33,7 +42,7 @@ const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ dest: "images" }).single("image")); // multer to handle multipart form data
+app.use(multer({ storage: fileStorage }).single("image")); // multer to handle multipart form data
 app.use(express.static(path.join(rootDir, "public")));
 app.use(
 	session({
