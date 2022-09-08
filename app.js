@@ -88,7 +88,9 @@ app.use((error, req, res, next) => {
 mongoose
 	.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then((result) => {
-		app.listen(3000);
+		app.listen(3500, () => {
+			console.log(`Server is listenning on PORT 3500`);
+		});
 	})
 	.catch((err) => {
 		console.log(err);
