@@ -58,6 +58,7 @@ app.use(
 	multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 ); // multer to handle multipart form data
 app.use(express.static(path.join(rootDir, "public")));
+app.use("/images", express.static(path.join(rootDir, "images")));
 app.use(
 	session({
 		secret: "my secret",
